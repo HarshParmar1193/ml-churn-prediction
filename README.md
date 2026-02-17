@@ -15,7 +15,7 @@ This project implements a **complete end-to-end ML pipeline** for predicting cus
 - Dockerized deployment for reproducibility  
 
 🛠 Tech Stack
-Python 3.10 | Pandas | NumPy | Scikit-learn | FastAPI | Pydantic | Docker
+- Python 3.10 | Pandas | NumPy | Scikit-learn | FastAPI | Pydantic | Docker
 
 ✨ Features
 - Automated **data preprocessing** with `ColumnTransformer`  
@@ -26,30 +26,29 @@ Python 3.10 | Pandas | NumPy | Scikit-learn | FastAPI | Pydantic | Docker
 
 📁 Project Structure
 churn-mlops-project/
-│
-├── src/          # Training & preprocessing pipeline
-├── app/          # FastAPI application
-├── Dockerfile    # Container configuration
-├── requirements.txt  # Pinned dependencies
-└── README.md     # This file
+- src/          # Training & preprocessing pipeline
+- app/          # FastAPI application
+- Dockerfile    # Container configuration
+- requirements.txt  # Pinned dependencies
+- README.md     # This file
 
 ⚡ How to Run
 
 1️⃣ Clone Repository
-git clone https://github.com/HarshParmar1193/ml-churn-prediction.git
-cd ml-churn-prediction
+- git clone https://github.com/HarshParmar1193/ml-churn-prediction.git
+- cd ml-churn-prediction
 
 2️⃣ Build Docker Image
-docker build -t churn-api .
+- docker build -t churn-api .
 
 3️⃣ Run Container
-docker run -p 8000:8000 churn-api
+- docker run -p 8000:8000 churn-api
 
 4️⃣ Access API
-Open in your browser:http://localhost:8000/docs
+- Open in your browser:http://localhost:8000/docs
 
 🧪 Example API Response
-
+-
 {
   "churn_prediction": 0,
   "churn_meaning": "Will NOT churn"
