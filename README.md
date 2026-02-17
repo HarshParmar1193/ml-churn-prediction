@@ -6,7 +6,7 @@
 [![Scikit-learn](https://img.shields.io/badge/scikit--learn-1.7.2-orange)](https://scikit-learn.org/)
 
 📖 Overview
-This project implements a **complete end-to-end ML pipeline** for predicting customer churn. It includes:
+- This project implements a **complete end-to-end ML pipeline** for predicting customer churn. It includes:
 
 - Data preprocessing & feature engineering  
 - Model training with Random Forest  
