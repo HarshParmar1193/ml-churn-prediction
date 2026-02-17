@@ -1,28 +1,22 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field, conint, confloat
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
 
-# =========================
+app = FastAPI(title="Customer Churn Prediction API", version="1.0")
+
 # Load trained model
-# =========================
 model = joblib.load("models/model.pkl")
 
-app = FastAPI(
-    title="Customer Churn Prediction API",
-    description="Predicts whether a customer will churn or not",
-    version="1.0"
-)
-
-# =========================
-# Define Pydantic input model
-# =========================
-class CustomerData(BaseModel):
+# ==========================
+# 1. Define input schema
+# ==========================
+class ChurnRequest(BaseModel):
     gender: str
-    SeniorCitizen: conint(ge=0, le=1)
+    SeniorCitizen: int = Field(..., ge=0, le=1)
     Partner: str
     Dependents: str
-    tenure: conint(ge=0)
+    tenure: int
     PhoneService: str
     MultipleLines: str
     InternetService: str
@@ -35,29 +29,27 @@ class CustomerData(BaseModel):
     Contract: str
     PaperlessBilling: str
     PaymentMethod: str
-    MonthlyCharges: confloat(ge=0)
-    TotalCharges: confloat(ge=0)
+    MonthlyCharges: float
+    TotalCharges: float
 
-
-# =========================
-# API Endpoints
-# =========================
+# ==========================
+# 2. Endpoints
+# ==========================
 @app.get("/")
 def home():
-    return {"message": "Churn Prediction API is running"}
+    return {"message": "Customer Churn Prediction API is running"}
+
 
 @app.post("/predict")
-def predict(data: CustomerData):
-    try:
-        # Convert Pydantic model to DataFrame
-        df = pd.DataFrame([data.dict()])
-        prediction = model.predict(df)
-        proba = model.predict_proba(df)[:, 1]
-
-        result = {
-            "churn_prediction": int(prediction[0]),
-            "churn_probability": float(proba[0])
-        }
-        return result
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+def predict(request: ChurnRequest):
+    # Convert Pydantic model to DataFrame
+    df = pd.DataFrame([request.dict()])
+    
+    # Make prediction
+    prediction = model.predict(df)[0]
+    
+    # Return structured response
+    return {
+        "churn_prediction": int(prediction),
+        "churn_meaning": "Will churn" if prediction == 1 else "Will NOT churn"
+    }
