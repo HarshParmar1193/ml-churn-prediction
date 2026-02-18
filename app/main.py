@@ -2,11 +2,17 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
 import pandas as pd
+import os
 
 app = FastAPI(title="Customer Churn Prediction API", version="1.0")
 
 # Load trained model
-model = joblib.load("models/model.pkl")
+MODEL_PATH = "models/model.pkl"
+
+if os.path.exists(MODEL_PATH):
+    model = joblib.load(MODEL_PATH)
+else:
+    model = None
 
 # ==========================
 # 1. Define input schema
@@ -42,13 +48,13 @@ def home():
 
 @app.post("/predict")
 def predict(request: ChurnRequest):
-    # Convert Pydantic model to DataFrame
+
+    if model is None:
+        return {"error": "Model file not found. Please train or add model.pkl"}
+
     df = pd.DataFrame([request.dict()])
-    
-    # Make prediction
     prediction = model.predict(df)[0]
-    
-    # Return structured response
+
     return {
         "churn_prediction": int(prediction),
         "churn_meaning": "Will churn" if prediction == 1 else "Will NOT churn"
