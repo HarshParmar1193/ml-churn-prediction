@@ -45,6 +45,9 @@ class ChurnRequest(BaseModel):
 def home():
     return {"message": "Customer Churn Prediction API is running"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/predict")
 def predict(request: ChurnRequest):
