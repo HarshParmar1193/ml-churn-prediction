@@ -47,7 +47,7 @@ def home():
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "healthy"}
 
 @app.post("/predict")
 def predict(request: ChurnRequest):
