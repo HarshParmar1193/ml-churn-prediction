@@ -1,8 +1,8 @@
 fastapi
 uvicorn
 pydantic
-scikit-learn
-pandas
+scikit-learn==1.8.0
+pandas==3.0.0
 joblib
 pytest
 httpx
